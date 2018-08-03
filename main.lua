@@ -6,7 +6,7 @@ function love.load()
     local width, height, flags = love.window.getMode()
     screenWidth = width
     screenHeight = height
-    level = 0
+    level = 2
 
     reset()
 end
@@ -31,9 +31,24 @@ function reset()
     elseif level == 1 then
         add(50, 100, true)
         add(250, 200)
-        Goal:reset(world, 500, 400)
+        add(450, 300)
+        add(650, 250)
+        Goal:reset(world, 800, 200)
+
+    elseif level == 2 then
+        add(50, 100, true)
+        add(400, 300)
+        add(50, 500)
+        add(400, 750)
+
+        add(400, 400, true)
+        add(600, 430, true)
+        Goal:reset(world, 550, 650)
+
+
+        
     else
-        Goal:reset(world, 50, 300)
+        Goal:reset(world, 50, 600)
     end
 
     Ball:reset(world)

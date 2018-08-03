@@ -6,21 +6,37 @@ function love.load()
     local width, height, flags = love.window.getMode()
     screenWidth = width
     screenHeight = height
+    level = 0
 
     reset()
 end
 
+function add(x, y, static)
+    static = static or false
+    platforms[platformCount] = Platform:new(world, x, y, static)
+    platformCount = platformCount + 1
+end
+
 function reset()
     platforms = {}
+    platformCount = 0
     world = love.physics.newWorld(0, 500, false)
 
     math.randomseed(os.time())
-    for i=1, 10 do
-        platforms[i] = Platform:new(world, math.random() * screenWidth, math.random() * screenHeight, false)
+
+    if level == 0 then
+        add(50, 100, true)
+        add(250, 200)
+        Goal:reset(world, 500, 400)
+    elseif level == 1 then
+        add(50, 100, true)
+        add(250, 200)
+        Goal:reset(world, 500, 400)
+    else
+        Goal:reset(world, 50, 300)
     end
 
     Ball:reset(world)
-    Goal:reset(world, 300, 300)
 
     love.graphics.setLineWidth(5)
 end
@@ -56,6 +72,11 @@ end
 function love.update(dt)
     world:update(dt)
     Ball:update(dt, platforms)
+
+    if Ball.body:isTouching(Goal.body) then
+        level = level + 1
+        reset()
+    end
 
     if Ball:needsReset(screenHeight) then
         reset()

@@ -6,15 +6,17 @@ function love.load()
     local width, height, flags = love.window.getMode()
     screenWidth = width
     screenHeight = height
-    level = 2
+    level = 0
 
     reset()
 end
 
 function add(x, y, static)
     static = static or false
-    platforms[platformCount] = Platform:new(world, x, y, static)
+    obj = Platform:new(world, x, y, static)
+    platforms[platformCount] = obj
     platformCount = platformCount + 1
+    return obj
 end
 
 function reset()
@@ -45,8 +47,25 @@ function reset()
         add(600, 430, true)
         Goal:reset(world, 550, 650)
 
+    elseif level == 3 then
+        add(50, 100, true)
+        add(250, 300, true):rotate(5)
 
-        
+        Goal:reset(world, 550, 250)
+
+    elseif level == 4 then
+        add(50, 100, true)
+        add(250, 300, true):rotate(5)
+        add(600, 200)
+
+        Goal:reset(world, 770, 100)
+
+    --[[elseif level == 5 then
+        add(50, 100, true)
+        add(250, 300, true):rotate(1) 
+
+        Goal:reset(world, 770, 100)
+    ]]--
     else
         Goal:reset(world, 50, 600)
     end

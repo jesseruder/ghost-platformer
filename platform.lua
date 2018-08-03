@@ -24,6 +24,11 @@ function Platform:new(world, x, y, isFixed)
     return o
 end
 
+function Platform:rotate(amount)
+    self.body:setAngularDamping(0.0)
+    self.body:setAngularVelocity(amount)
+end
+
 function Platform:draw()
     x = math.cos(self.body:getAngle()) * self.length / 2.0
     y = math.sin(self.body:getAngle()) * self.length / 2.0

@@ -1,28 +1,38 @@
 Ball = require 'ball'
 Platform = require 'platform'
+Goal = require 'goal'
 
 function love.load()
     local width, height, flags = love.window.getMode()
     screenWidth = width
     screenHeight = height
+
+    reset()
+end
+
+function reset()
     platforms = {}
-    world = love.physics.newWorld(0, 2, false)
+    world = love.physics.newWorld(0, 500, false)
 
     math.randomseed(os.time())
     for i=1, 10 do
-        platforms[i] = Platform:new(math.random() * screenWidth, math.random() * screenHeight)
+        platforms[i] = Platform:new(world, math.random() * screenWidth, math.random() * screenHeight, false)
     end
 
     Ball:reset(world)
+    Goal:reset(world, 300, 300)
 
     love.graphics.setLineWidth(5)
 end
 
 function love.draw()
+    love.graphics.setColor(0, 1, 0, 1)
+
+    love.graphics.push()
+    Goal:draw()
+    love.graphics.pop()
+
     love.graphics.setColor(1, 1, 1, 1)
-    local centerX = screenWidth * 0.5
-    local centerY = screenHeight * 0.5
-    love.graphics.print(tostring(3), centerX, centerY)
 
     love.graphics.push()
     Ball:draw()
@@ -44,6 +54,10 @@ function love.keyreleased(key, scancode)
 end
 
 function love.update(dt)
-    world.update(dt)
+    world:update(dt)
     Ball:update(dt, platforms)
+
+    if Ball:needsReset(screenHeight) then
+        reset()
+    end
 end

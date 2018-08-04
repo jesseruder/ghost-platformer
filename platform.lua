@@ -15,8 +15,8 @@ function Platform:new(world, x, y, isFixed)
     rotationShape = love.physics.newPolygonShape(-o.length / 2.0, 0, o.length / 2.0, 0, o.length/ 2.0, o.depth, -o.length / 2.0, o.depth)
     rotationFixture = love.physics.newFixture(o.body, rotationShape)
 
-    fixedBody = love.physics.newBody(world, x, x, "kinematic")
-    fixedShape = love.physics.newPolygonShape(-1, -1, 1, -1, 1, 1, -1, 1)
+    fixedBody = love.physics.newBody(world, x, y, "kinematic")
+    fixedShape = love.physics.newPolygonShape(-1, 0, 1, 0, 1, 1, -1, 1)
     fixedFixture = love.physics.newFixture(fixedBody, fixedShape)
 
     love.physics.newRevoluteJoint(o.body, fixedBody, x, y)
